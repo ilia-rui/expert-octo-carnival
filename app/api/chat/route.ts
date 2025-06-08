@@ -1,10 +1,14 @@
 import { NextResponse } from 'next/server'
 
-const API_KEY = 'sk-Rw4W1w7nE6KhmYbtA1hQAAS2kCXKgx6USSrKXxRhNUySdOSd'
+const API_KEY = process.env.MOONSHOT_API_KEY
 const API_URL = 'https://api.moonshot.cn/v1/chat/completions'
 
 export async function POST(req: Request) {
   try {
+    if (!API_KEY) {
+      throw new Error('API key is not configured')
+    }
+
     const { messages } = await req.json()
 
     if (!messages || !Array.isArray(messages)) {
